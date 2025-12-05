@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️𝓢𝔂𝓮𝓭 𝓜𝓾𝔃𝓪𝓶𝓶𝓲𝓵 𝓢𝓱𝓪𝓱 ❤️</title>
+    <!-- JW Player -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.26.0/jwplayer.js"></script>
+    <script>jwplayer.key = "XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo";</script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Common Styles */
+        body {
+            margin: 0;
+            background-color: #000000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #aaa;
+            padding-top: 280px;
+            padding-bottom: 30px;
+        }
+
+        /* Player Toggle Buttons */
+        .player-toggle {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background: #111;
+            padding: 5px 0;
+            z-index: 1001;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .toggle-btn {
+            background: #222;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .toggle-btn.active {
+            background: #E113D3;
+            color: white;
+            box-shadow: 0 0 10px #E113D3, 0 0 20px #E113D3;
+        }
+
+        .toggle-btn:hover {
+            background: #333;
+        }
+
+        /* JW Player Styles */
+        #jwplayer-container {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 170px;
+            background: #000;
+            z-index: 1000;
+        }
+
+        /* HTML5 Player Styles */
+        #html5-player-container {
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            height: 170px;
+            background: #000;
+            z-index: 1000;
+            display: none;
+        }
+
+        .html5-player-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #html5-video-player {
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .html5-controls-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #html5-player-container:hover .html5-controls-container {
+            opacity: 1;
+        }
+
+        .html5-control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .html5-control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .html5-progress-container {
+            flex-grow: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin: 0 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .html5-progress-bar {
+            height: 100%;
+            background: #00c8ff;
+            border-radius: 2px;
+            width: 0;
+        }
+
+        .html5-time-display {
+            font-size: 12px;
+            color: #ddd;
+            min-width: 70px;
+        }
+
+        /* Channel Filters */
+        .channel-filters {
+            position: fixed;
+            top: 210px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .filter-btn {
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: none;
+            background: #222;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 9px;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                #ff0000, #ff7300, #fffb00, #48ff00,
+                #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000
+            );
+            background-size: 400% 400%;
+            opacity: 0;
+            transition: 0.5s;
+            z-index: 1;
+        }
+
+        .filter-btn:hover::before {
+            opacity: 0.5;
+        }
+
+        .filter-btn.active {
+            background: #E113D3;
+            color: white;
+            box-shadow: 0 0 10px #E113D3, 0 0 20px #E113D3;
+        }
+
+        .filter-btn span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Channel Buttons */
+        .channel-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            margin-top: 60px;
+            overflow-y: auto;
+            max-height: calc(100vh - 300px);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .channel-button {
+            position: relative;
+            border-radius: 10%;
+            border: none;
+            padding: 2px;
+            height: 130px;
+            width: 96px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .channel-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                #00ffd5, #002bff, #7a00ff, #ff00c8,
+                #ff0000, #ff7300, #fffb00, #48ff00
+            );
+            background-size: 400% 400%;
+            opacity: 0;
+            transition: 0.5s;
+            animation: animateGlow 20s linear infinite;
+            z-index: 1;
+        }
+
+        .channel-button:hover::before {
+            opacity: 1;
+        }
+
+        .channel-button::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 8%;
+            background: #333;
+            z-index: 2;
+        }
+
+        .channel-button img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 3;
+            transition: transform 0.3s ease;
+        }
+
+        .channel-button:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Live Badge */
+        .live-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            z-index: 4;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Server Badge */
+        .server-badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 8px;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 3px;
+            z-index: 4;
+        }
+
+        /* Animations */
+        @keyframes animateGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 400% 50%;
+            }
+        }
+
+        .playing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+        }
+        
+        .channel-button {
+            display: none;
+        }
+        
+        .show-channel {
+            display: block;
+        }
+
+        /* Copyright */
+        .copyright {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        /* Loading Spinner */
+        #loading-spinner {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1002;
+            color: white;
+            font-size: 24px;
+        }
+        
+        /* Server Selection Modal */
+        .server-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .server-modal-content {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(225, 19, 211, 0.5);
+        }
+        
+        .server-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+        
+        .server-modal-title {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .server-modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .server-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .server-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .server-item:hover {
+            background-color: #444;
+            transform: translateX(5px);
+        }
+        
+        .server-name {
+            color: white;
+            font-weight: bold;
+        }
+        
+        .server-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .status-live {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .status-offline {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Player Toggle Buttons -->
+    <div class="player-toggle">
+        <button class="toggle-btn active" id="jwplayer-toggle">
+            <i class="fas fa-play-circle"></i> JW Player
+        </button>
+        <button class="toggle-btn" id="html5player-toggle">
+            <i class="fas fa-play-circle"></i> HTML5 Player
+        </button>
+    </div>
+    
+    <!-- JW Player Container -->
+    <div id="jwplayer-container">
+        <div id="player"></div>
+    </div>
+    
+    <!-- HTML5 Player Container -->
+    <div id="html5-player-container">
+        <div class="html5-player-wrapper">
+            <video id="html5-video-player" playsinline></video>
+            <div class="html5-controls-container">
+                <button class="html5-control-btn" id="html5-play-pause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="html5-progress-container" id="html5-progress-container">
+                    <div class="html5-progress-bar" id="html5-progress-bar"></div>
+                </div>
+                <div class="html5-time-display">
+                    <span id="html5-current-time">00:00</span> / <span id="html5-duration">00:00</span>
+                </div>
+                <button class="html5-control-btn" id="html5-fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div id="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i> Loading...
+    </div>
+    
+    <!-- Channel Filters -->
+    <div class="channel-filters">
+        <button class="filter-btn active" data-filter="all"><span>All</span></button>
+        <button class="filter-btn" data-filter="news"><span>News</span></button>
+        <button class="filter-btn" data-filter="entertainment"><span>Entertainment</span></button>
+        <button class="filter-btn" data-filter="movies"><span>Movies</span></button>
+        <button class="filter-btn" data-filter="music"><span>Music</span></button>
+   <button class="filter-btn" data-filter="documentary"><span>Documentary</span></button>     
+        
+        
+        <button class="filter-btn" data-filter="kids"><span>Kids</span></button>
+        <button class="filter-btn" data-filter="sports"><span>Sports</span></button>
+        <button class="filter-btn" data-filter="islamic"><span>Islamic</span></button>
+        <button class="filter-btn" data-filter="regional"><span>Regional</span></button>
+    </div>
+    
+    <!-- Channel Buttons -->
+    <div class="channel-buttons">
+        <!-- Original channels -->
+        <div class="channel-button show-channel" data-category="news" data-channel="ARY News">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">Ary News</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzN20mlIVfGZpjRa5J_fOEiqUJSoYnRyDndg&amp;usqp=CAU">
+        </div>
+        
+     <div class="channel-button show-channel" data-category="entertainment" data-channel="ARY DIGITAL HD">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">ARY Digital HD</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkE4BUlnSv32tJ2cRV7uoOTeSiPfHXVLn5Q&amp;usqp=CAU">
+        </div>
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="ARY Zindagi">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">ARY Zindagi</span>
+            <img src="https://i.pinimg.com/736x/fc/80/ec/fc80ec7ef36b86677a64e0fe547fc508.jpg">
+        </div>
+        
+        
+ <div class="channel-button show-channel" data-category="music" data-channel="ARY-Musik"data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">ARY Musik</span>
+            <img src="https://i.pinimg.com/736x/43/0b/f2/430bf205f225bf2502c9cfb5ab6624d7.jpg">
+        </div>       
+        
+      <div class="channel-button show-channel" data-category="islamic" data-channel="ARY-QTV"data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">ARY-QTV</span>
+            <img src="https://i.pinimg.com/736x/c0/33/d4/c033d4a5520f9e636586974fc91eb5bb.jpg">
+        </div>     
+        
+        
+        <!-- HUM TV Channel - Modified to work without showing server modal -->
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="HUM TV" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">HUM TV</span>
+            <img src="https://i.pinimg.com/736x/72/81/f7/7281f79bf1d10b96bad4a294377ae268.jpg">
+        </div>
+      
+
+<div class="channel-button show-channel" data-category="entertainment" data-channel="hum-europe" data-player="html5">
+            <span class="live-badge">LIVE</span>
+            <img src="https://irfanistan.wordpress.com/wp-content/uploads/2014/03/image.jpg">
+            <div class="channel-name">Hum Europe</div></div> 
+        
+
+
+
+
+
+  
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="HUM Sitaray" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">HUM Sitaray</span>
+            <img src="https://i.pinimg.com/736x/cf/5e/94/cf5e94cefb5f36fb47a903065be11906.jpg">
+        </div>
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="HUM Masala" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">HUM Masala</span>
+            <img src="https://i.pinimg.com/736x/1e/07/4f/1e074fc79cc63e8f090818b8dcfb9e4b.jpg">
+        </div>
+        
+        
+  <div class="channel-button show-channel" data-category="news" data-channel="HUM-News" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">HUM-News</span>
+            <img src="https://i.pinimg.com/736x/1d/9c/ca/1d9ccaf88fad0140ca1f3353cdf707f5.jpg">
+        </div>      
+        
+        
+        
+        <div class="channel-button show-channel" data-category="news" data-channel="GEO News" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">GEO News</span>
+            <img src="https://i.pinimg.com/736x/ff/be/32/ffbe325242ee01ba50c166f25765d9ad.jpg">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="GEO Entertainment" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">GEO ENT</span>
+            <img src="https://i.pinimg.com/736x/75/78/c4/7578c455e0f4c8742876a65a792f3c8c.jpg">
+        </div>
+        
+        
+     
+    
+        
+        
+        
+        
+        
+        
+       <!-- HTML5 Player Channels -->
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="geo-kahani" data-player="html5">
+            <span class="live-badge">LIVE</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb9ZuOZ_Vh2gIiZuwTNUD8mwt60OuLZN2Q7qv3s5zuOPYf-6-VCrTU74w&s=10">
+            <div class="channel-name">Geo Kahani</div></div> 
+        
+    <div class="channel-button show-channel" data-category="sports" data-channel="Geo-Super" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">Geo Super</span>
+            <img src="https://i.pinimg.com/736x/8a/a4/df/8aa4df34685a46a12fc051c8bedcaabe.jpg">
+        </div>    
+        
+        
+        
+        
+        
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="MUN TV" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">MUN TV</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwq9NjdGEEPSXciUK0XHnTATdlb39ipLIFJw&amp;s">
+        </div>
+        
+        
+        
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="AurLife">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">AurLife</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrL04_yTx7TBC0v9vqibY0e-5FrWLbolH9n0vkxjZl_6RSGgi7_AMs_eXV&amp;s=10">
+        </div>
+        
+        
+        
+        
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="ATV" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">ATV</span>
+            <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d051f-atv.jpg">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="APlus" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">APlus</span>
+            <img src="https://i.pinimg.com/736x/b5/2e/47/b52e47e63cd2ec9f2537f77fd03132fe.jpg">
+        </div>
+        
+        <!-- New single channels -->
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="PTV Home" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">PTV Home</span>
+            <img src="https://ptv.com.pk/frontend/media/gallery/ptvlivehome.jpg">
+        </div> 
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="PTV Global" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">PTV Global</span>
+            <img src="https://ptv.com.pk/frontend/media/gallery/ptvliveglobal.jpg">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="sports" data-channel="PTV-Sports" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">PTV-Sports</span>
+            <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750321954030.webp?id=20">
+        </div>
+        
+   <div class="channel-button show-channel" data-category="entertainment" data-channel="PTV-National" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">PTV-National</span><img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750322366525.webp?id=22">
+        </div>
+     
+
+
+
+
+        
+<div class="channel-button show-channel" data-category="regional" data-channel="PTV-Bolan" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">PTV-Bolan</span><img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750322527745.webp?id=49">
+        </div>               
+   
+
+
+          
+<div class="channel-button show-channel" data-category="news" data-channel="PTV-News" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">PTV-News</span><img src="https://ptv.com.pk/frontend/media/gallery/ptvlivenews.jpg">
+        </div>        
+        
+ 
+<div class="channel-button show-channel" data-category="news" data-channel="PTV-World" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">PTV-World</span><img src=" https://ptv.com.pk/frontend/media/gallery/ptvliveworld.jpg">
+        </div> 
+
+   
+        <div class="channel-button show-channel" data-category="news" data-channel="BOL News HD" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">BOL News</span>
+            <img src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/16419845781.jpg">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="BOL Entertainment HD" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">BOL ENT</span>
+            <img src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/16419858521.jpg">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="SAB Entertainment" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">SAB ENT</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSg0u8cjPgNmC0MJNpCfRq6SyIjKUpA72JO1IaaGMj7Dt5GnZ0iiDFLAs&amp;s=10">
+        </div>
+        
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="SET Entertainment" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">SET ENT</span>
+            <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1730720760949.webp?id=11">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="AAN HD" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">AAN HD</span>
+            <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1681977574.webp?id=89">
+        </div>
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="Green ENT" data-single-source="true">
+            <span class="live-badge">LIVE</span> 
+            <span class="server-badge">Green ENT</span>
+            <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702552123.webp?id=64">
+        </div>
+      
+
+
+  
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="Aaj-Ent" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Aaj Ent</span><img src=" https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQanw2-oMc7F3BYzgK6FJZHmzExpMju3XpF0Q&amp;usqp=CAU">
+        </div>       
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="PlayTV" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">PlayTV</span><img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/e0bf4-play-ent.jpg">
+        </div>
+        
+ <div class="channel-button show-channel" data-category="entertainment" data-channel="Express-ENT" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Express-ENT</span><img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/express-entertainment-live.webp?id=73 ">
+        </div>
+             
+<div class="channel-button show-channel" data-category="entertainment" data-channel="TV-ONE" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">TV ONE</span><img src="https://images.mjunoon.tv:8181/logo/Tvone-mjunoon.webp ">
+        </div>               
+             
+<div class="channel-button show-channel" data-category="entertainment" data-channel="See-TV" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">See-TV</span><img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d1e60-65d9a-see-tv-low.jpg">
+        </div>        
+        
+ <div class="channel-button show-channel" data-category="entertainment" data-channel="APNA" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">APNA TV</span><img src="https://images.mjunoon.tv:8181/logo/Apna-mjunoon.webp">
+        </div>       
+        
+        
+        <div class="channel-button show-channel" data-category="music" data-channel="8XM" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">8XM</span><img src="https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp">
+        </div>       
+     
+
+<div class="channel-button show-channel" data-category="music" data-channel="8XM2" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">8XM</span><img src="https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp">
+        </div>       
+     
+
+
+
+
+
+   
+ <div class="channel-button show-channel" data-category="music" data-channel="JALWA" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">JALWA</span><img src="https://images.mjunoon.tv:8181/logo/Jalwa-mjunoon.webp ">
+        </div>
+ 
+
+
+            
+<div class="channel-button show-channel" data-category="movies" data-channel="filmazia" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Filmazia</span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjDWgS5E_GIaSqaJ4nkgOiJRR80aOkjM88iQ&amp;s">
+        </div>               
+             
+<div class="channel-button show-channel" data-category="movies" data-channel="Filmax" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Filmax</span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAIbzFfvYLZ3dIpokqv6n7vmkvYPqti6d6MA72c-6zwMO7-jYWlPXoS44Q&amp;s=10">
+        </div>        
+        
+ <div class="channel-button show-channel" data-category="movies" data-channel="Aruj-TV" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Aruj-TV</span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJMdKWDCodNvnjUWWwJk-krlUsDhyqRo1gg&amp;s">
+        </div>       
+        
+        
+        <div class="channel-button show-channel" data-category="entertainment" data-channel="LTN-Family" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">LTN-Family</span><img src=" https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/ltn-family-live.webp?id=87">
+        </div>       
+ 
+
+
+
+
+       
+<div class="channel-button show-channel" data-category="movies" data-channel="Inplus" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">Inplus</span><img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/TMSH-1720441424490.webp?id=46">
+        </div>
+             
+<div class="channel-button show-channel" data-category="movies" data-channel="A1-TV" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">A1-TV</span><img src="https://i.pinimg.com/736x/9d/0c/aa/9d0caacf2cce0a3aa733dcddec7e9c7a.jpg">
+        </div>               
+             
+<div class="channel-button show-channel" data-category="sports" data-channel="TEN-Sports" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">TEN Sports</span><img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/ten-sports-hd-poster.webp?id=76">
+        </div>        
+        
+ <div class="channel-button show-channel" data-category="news" data-channel="92 News" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">92 News</span><img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/3981a-65d9a-92-news-low.jpg">
+        </div>       
+        
+        
+        <div class="channel-button show-channel" data-category="news" data-channel="24" data-single-source="true"><span class="live-badge">LIVE</span> <span class="server-badge">24 News</span><img src="https://i.pinimg.com/736x/b2/69/7b/b2697b88f8797947f6dfb169ea374a15.jpg">
+        </div>    
+
+
+
+ 
+
+
+
+
+
+
+
+   
+   
+<div class="channel-button show-channel" data-category="news" data-channel="GNN" data-single-source="true">
+  <span class="live-badge">LIVE</span>  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/820ad-gnn-4.jpg" alt="GNN">
+  <div class="channel-name">GNN</div>
+</div>
+
+
+
+
+<div class="channel-button show-channel" data-category="documentary" data-channel="Animal-Planet" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/996e5-animal-planet-4.jpg" alt="Animal-Planet">
+  <div class="channel-name">Animal-Planet</div>
+</div>
+
+<div class="channel-button show-channel" data-category="documentary" data-channel="Discovery" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d3023-4.jpg" alt="Discovery">
+  <div class="channel-name">Discovery</div>
+</div>
+
+
+<div class="channel-button show-channel" data-category="documentary" data-channel="nat-geo" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://cdn.prod.website-files.com/6701605ac41a7026d8da1366/67abc054f8b85070aaa1f981_natgeo_logo_fin.gif">
+  <div class="channel-name">National Geography</div>
+</div>
+
+<div class="channel-button show-channel" data-category="documentary" data-channel="nat-wild" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://i.pinimg.com/736x/d3/5b/23/d35b2303bfdd00850125816388fe444f.jpg">
+  <div class="channel-name">Nat Go Wild</div>
+</div>
+
+
+
+<div class="channel-button show-channel" data-category="kids" data-channel="Kids-Zone-Plus" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJo1h7wXNNa0GsAR02QYOeyK9L50fCJDbCL2IoJWNN1vuJn6dsAtD8Ru8O&amp;s=10" alt="Kids-Zone-Plus">
+  <div class="channel-name">Kids-Zone-Plus</div>
+</div>
+
+<div class="channel-button show-channel" data-category="kids" data-channel="Planet-Fun" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMt_5jjvTL8DkceSNOamedlWj2Kk7-K6NU2Q&amp;usqp=CAU" alt="Planet-Fun">
+  <div class="channel-name">Planet-Fun</div>
+</div>
+
+<div class="channel-button show-channel" data-category="kids" data-channel="Cartoon-Network" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/70010-cartoon-network-in-urdu-4.jpg" alt="Cartoon-Network">
+  <div class="channel-name">Cartoon-Network</div>
+</div>
+
+<div class="channel-button show-channel" data-category="kids" data-channel="Discovery-Kids" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/85fdc-324-x-432.jpg" alt="Discovery-Kids">
+  <div class="channel-name">Discovery-Kids</div>
+</div>
+
+<div class="channel-button show-channel" data-category="kids" data-channel="Minimax" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702633459-logo.webp?id=57" alt="Minimax">
+  <div class="channel-name">Minimax</div>
+</div>
+
+
+<div class="channel-button show-channel" data-category="kids" data-channel="minimax2" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702633459-logo.webp?id=57" alt="Minimax">
+  <div class="channel-name">Minimax</div>
+</div>
+
+
+
+
+
+
+<div class="channel-button show-channel" data-category="news" data-channel="Dunya-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZXfD8mXuhzYNORwhKe9bZ8Yr-Vi5mbSnTsqc9PAMr3gNZIrM58bbyTFxM&amp;s=10" alt="Dunya-News">
+  <div class="channel-name">Dunya-News</div>
+</div>
+
+
+
+<div class="channel-button show-channel" data-category="news" data-channel="Samaa-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/samaa-tv-live.webp?id=76" alt="Dunya-News">
+  <div class="channel-name">SAMAA News</div>
+</div>
+
+
+
+
+
+
+
+<div class="channel-button show-channel" data-category="news" data-channel="City-41" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtxzNoKL_ICFzKxD8mLjEnQjipQR9zoyVTAURHQ8Ir1k0blQEPs2BszZ2B&amp;s=10" alt="City-41">
+  <div class="channel-name">City-41</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="City-42" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/e8458-city-42.jpg" alt="City-42">
+  <div class="channel-name">City-42</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="Dharti-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/5eb9a-dharti-tv.jpg" alt="Dharti-TV">
+  <div class="channel-name">Dharti-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="Awaz-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d0b57-awaz-tv.jpg" alt="Awaz-TV">
+  <div class="channel-name">Awaz-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="Public-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Public_News_logo.jpg/640px-Public_News_logo.jpg" alt="Public-News">
+  <div class="channel-name">Public-News</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="K2" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/2ae68-kay-2.jpg" alt="K2">
+  <div class="channel-name">K2</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="K21-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/7d071-k21-news.jpg" alt="K21-News">
+  <div class="channel-name">K21-News</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="Kohinoor" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/0a7b4-kohenoor.jpg" alt="Kohinoor">
+  <div class="channel-name">Kohinoor</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="Khyber-Ent" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/9e716-khyber-entertainment.jpg" alt="Khyber-Ent">
+  <div class="channel-name">Khyber-Ent</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="Khyber-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/9b2c5-khyber-new.jpg" alt="Khyber-News">
+  <div class="channel-name">Khyber-News</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Hyder-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb0KH_d2PnODfYfWgEDpu87rOXkEd8ugIisUStPEawQ7u890qlqKW2198&amp;s=10" alt="Hyder-TV">
+  <div class="channel-name">Hyder-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Ahlebait-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwZtTrRNvdBd6-QY_EdNmQRf7XQov12URPrj8OUxaxSUrdcK7F03jNSMUR&amp;s=10" alt="Ahlebait-TV">
+  <div class="channel-name">Ahlebait-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Sahar-Urdu" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://i.pinimg.com/736x/ec/a7/c3/eca7c3b64bb64c6feedfc423b4c34d1f.jpg" alt="Sahar-Urdu">
+  <div class="channel-name">Sahar-Urdu</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Hidayat-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUClbqS7b8TVH3iAjv-fj0WTR1doiVwyK3Pmhqo8_cyzG_wzpBezh8T8o&amp;s=10" alt="Hidayat-TV">
+  <div class="channel-name">Hidayat-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Imam-Ali-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN8HNJKoWT8DO7WZDSAz3xcsEfk5SyvQo6QQ&amp;s" alt="Imam-Ali-TV">
+  <div class="channel-name">Imam-Ali-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Karbala-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkWuDWO4AdHO4CnuFbfCG-zfbDC8OF8NuOSfW9WQ3JZop-3nCQTsXL4J8&amp;s=10" alt="Karbala-TV">
+  <div class="channel-name">Karbala-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Qaim-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpJLwEJox0iiu7P0X_RY93ok5Jqq-GgBqJMw&amp;s" alt="Qaim-TV">
+  <div class="channel-name">Qaim-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Imam-Hussein-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://i.pinimg.com/736x/9e/4b/9a/9e4b9a0de2fb4ff6262b9ac13009675b.jpg" alt="Imam-Hussein-TV">
+  <div class="channel-name">Imam-Hussein-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Zainabia-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://shialivetv.com/shialive/assets/img/t3bepyRDu65zIkcaQB2Q_3_small.png" alt="Zainabia-TV">
+  <div class="channel-name">Zainabia-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Paigham-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq6_XBEo2H-puZwudlcwEdturJGmDSZl_NlQ93Et7FH4BjTcZpqXA3V8Y&amp;s=10" alt="Paigham-TV">
+  <div class="channel-name">Paigham-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Madni-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Madni-TV-mjunoon.webp" alt="Madni-TV">
+  <div class="channel-name">Madni-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Makkah-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1649059727Artboard5-100.jpg" alt="Makkah-TV">
+  <div class="channel-name">Makkah-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="islamic" data-channel="Madina-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1649059915Artboard5-100.jpg" alt="Madina-TV">
+  <div class="channel-name">Madina-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="Metro-One" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/b736c-metro-one.jpg" alt="Metro-One">
+  <div class="channel-name">Metro-One</div>
+</div>
+
+<div class="channel-button show-channel" data-category="entertainment" data-channel="Mehran-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/06b64-mehran-tv.jpg" alt="Mehran-TV">
+  <div class="channel-name">Mehran-TV</div>
+</div>
+
+<div class="channel-button show-channel" data-category="news" data-channel="Neo-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/b8f1b-neo-news.jpg" alt="Neo-News">
+  <div class="channel-name">Neo-News</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="VSH-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/61c18-vsh-news.jpg" alt="VSH-News">
+  <div class="channel-name">VSH-News</div>
+</div>
+
+<div class="channel-button show-channel" data-category="regional" data-channel="Sindh-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/sindh-tv-live.webp?id=40" alt="Sindh-TV">
+  <div class="channel-name">Sindh-TV</div>
+</div>
+
+  
+<div class="channel-button show-channel" data-category="news" data-channel="Sindh-TV-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/sindh-tv-news-live.webp?id=59" alt="Sindh-TV-News">
+  <div class="channel-name">Sindh-TV-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Such-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/such-tv-live.webp?id=83" alt="Such-TV">
+  <div class="channel-name">Such-TV</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="5-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/TMSH-1723464324782.webp?id=74" alt="5-News">
+  <div class="channel-name">5-News</div>
+</div>
+<div class="channel-button show-channel" data-category="movies" data-channel="Movie-One" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/movie-one-mjunoon.webp" alt="Movie-One">
+  <div class="channel-name">Movie-One</div>
+</div>
+<div class="channel-button show-channel" data-category="movies" data-channel="Champion-TV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/champion-tv-mjunoon.webp" alt="Champion-TV">
+  <div class="channel-name">Champion-TV</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Abb-Takk" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Abb-Takk-mjunoon.webp" alt="Abb-Takk">
+  <div class="channel-name">Abb-Takk</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="ABN-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/abn-news-live-mjunoon.webp" alt="ABN-News">
+  <div class="channel-name">ABN-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Lahore-Rang" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Lahore-Rang-mjunoon.webp" alt="Lahore-Rang">
+  <div class="channel-name">Lahore-Rang</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Times-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/times_news-mjunoon.webp" alt="Times-News">
+  <div class="channel-name">Times-News</div>
+</div>
+<div class="channel-button show-channel" data-category="regional" data-channel="Kashish" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Kashish-mjunoon.webp" alt="Kashish">
+  <div class="channel-name">Kashish</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="KTN-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/KTN-news-mjunoon.webp" alt="KTN-News">
+  <div class="channel-name">KTN-News</div>
+</div>
+<div class="channel-button show-channel" data-category="entertainment" data-channel="KTN" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/KTN-mjunoon.webp" alt="KTN">
+  <div class="channel-name">KTN</div>
+</div>
+<div class="channel-button show-channel" data-category="regional" data-channel="Khaber" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Khaber-mjunoon.webp" alt="Khaber">
+  <div class="channel-name">Khaber</div>
+</div>
+<div class="channel-button show-channel" data-category="regional" data-channel="Pashto1" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Pashto1-mjunoon.webp" alt="Pashto1">
+  <div class="channel-name">Pashto1</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="365-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl4yGo8Fh80P_PYFs7688pVPm6GSZ6cU7WwSKIE8lLylhBzX1kg-7aC7-4&amp;s=10" alt="365-News">
+  <div class="channel-name">365-News</div>
+</div>
+<div class="channel-button show-channel" data-category="entertainment" data-channel="Waseb" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://images.mjunoon.tv:8181/logo/Waseb-mjunoon.webp" alt="Waseb">
+  <div class="channel-name">Waseb</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Lahore-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXBvycnZHVWvTjhtHwt0-y5guhOtXlD9JGvNWxuvJwYdFwyWCYJHciTwP-&amp;s=10" alt="Lahore-News">
+  <div class="channel-name">Lahore-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Aaj-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxy0nP3owN22Aoh8_xdlp_nVbIPXAdtHGxjA&amp;s" alt="Aaj-News">
+  <div class="channel-name">Aaj-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="News-One" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/news-one-live.webp?id=96" alt="News-One">
+  <div class="channel-name">News-One</div>
+</div>
+<div class="channel-button show-channel" data-category="documentary" data-channel="Discover-Pak" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/discover-pakistan-live-logo.webp?id=27" alt="Discover-Pak">
+  <div class="channel-name">Discover-Pak</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Roze-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/roze-news-live.webp?id=70" alt="Roze-News">
+  <div class="channel-name">Roze-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Rohi" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/rohi-live.webp?id=17" alt="Rohi">
+  <div class="channel-name">Rohi</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Dawn-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Dawn_News.jpg" alt="Dawn-News">
+  <div class="channel-name">Dawn-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Express-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://i.pinimg.com/736x/ed/9d/a5/ed9da5cd36f4f377cb675561a1dc28ce.jpg" alt="Express-News">
+  <div class="channel-name">Express-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="AIK-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/AIKNEWS-LOGO.webp?id=65" alt="AIK-News">
+  <div class="channel-name">AIK-News</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="GTV" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/gtv-new-logo.webp?id=34" alt="GTV">
+  <div class="channel-name">GTV</div>
+</div>
+<div class="channel-button show-channel" data-category="news" data-channel="Suno-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/1709545345-logo.webp?id=30" alt="Suno-News">
+  <div class="channel-name">Suno-News</div>
+</div>   
+        
+        
+        
+    <div class="channel-button show-channel" data-category="news" data-channel="Sun-News" data-single-source="true">
+  <span class="live-badge">LIVE</span>
+  <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1758117208685.webp?id=73" alt="Suno-News">
+  <div class="channel-name">Sun-News</div>
+</div>       
+        
+        
+        
+        
+        
+        
+        
+        <div class="channel-button show-channel" data-category="news" data-channel="Capital-TV" data-single-source="true">
+            <span class="live-badge">LIVE</span>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9Wqxi3XfF5NV_FMKA7ZAbyYAySTdBFOxIGix7eGoYGwjiLuzYJqer4Gs&amp;s=10" alt="Capital-TV">
+            <div class="channel-name">Capital-TV</div>
+        </div>
+        
+        
+        
+        
+    
+    <!-- Server Selection Modal -->
+    <div class="server-modal" id="server-modal">
+        <div class="server-modal-content">
+            <div class="server-modal-header">
+                <div class="server-modal-title" id="server-modal-title">Multiple Links for </div>
+                <button class="server-modal-close" id="server-modal-close">&times;</button>
+            </div>
+            <ul class="server-list" id="server-list">
+                <!-- Server options will be populated here -->
+            </ul>
+        </div>
+    </div>
+    
+    <div class="copyright">
+        <span>Copyright 2025. All Right Reserved By: ~Syed Muzammil Shah~</span>
+    </div>
+    
+    <script>
+        // Define channel servers
+        const channelServers = {
+            "ARY News": [
+                {
+                    name: "Server 1",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/83M/chunks.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzN20mlIVfGZpjRa5J_fOEiqUJSoYnRyDndg&amp;usqp=CAU",
+                    status: "live"
+                },
+                {
+                    name: "Server 2",
+                    url: "https://stream2.aryzap.com/v1/0183ea205add0b8ed5941a38bc6f/0183ea20909b0b8ed5aa4d793456/main.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzN20mlIVfGZpjRa5J_fOEiqUJSoYnRyDndg&amp;usqp=CAU",
+                    status: "live"
+                }
+            ],
+            
+            
+          "ARY DIGITAL HD": [
+                {
+                    name: "Server 1",
+                    url: "https://stream2.aryzap.com/v1/0183ea2408f90b8ed5941a38bc72/0183ea24302d0b8ed5941a38bc75/main.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkE4BUlnSv32tJ2cRV7uoOTeSiPfHXVLn5Q&amp;usqp=CAU",
+                    status: "live"
+                },
+                {
+                    name: "Server 2",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/84M/chunks.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkE4BUlnSv32tJ2cRV7uoOTeSiPfHXVLn5Q&amp;usqp=CAU",
+                    status: "live"
+                }
+            ],
+            "ARY Zindagi": [
+                {
+                    name: "Server 1",
+                    url: "https://stream2.aryzap.com/v1/01847acaa0f70b8ed5aa6ed04abe/01847acacfc30b8ed5aa6ed04ac1/main.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/ary-zindagi-live-logo.webp?id=25",
+                    status: "live"
+                },
+                {
+                    name: "Server 2",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/85M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/ary-zindagi-live-logo.webp?id=25",
+                    status: "live"
+                }
+            ],
+            
+            
+          "ARY-Musik": [
+                {
+                    name: "Direct Server",
+                    url: "https://stream2.aryzap.com/v1/01847ac7a4930b8ed5aa6ed04aba/01847ac8f5f70b8ed5aa6ed04abd/main.m3u8",
+                    image: "https://images.aryzap.com/big/ARY MUSIC@3x Web@3x_1750341587298.webp",
+                    status: "live"
+                }
+            ],  
+            
+          
+
+"ARY-QTV": [
+                {
+                    name: "Direct Server",
+                    url: "https://stream2.aryzap.com/v1/0183ea2a0eec0b8ed5941a38bc76/0183ea2a4e470b8ed5aa4d793457/main.m3u8",
+                    image: "https://images.aryzap.com/big/ARY QTV@3x Web@3x_1750341580172.webp",
+                    status: "live"
+                }
+            ],  
+
+
+
+  
+            
+            "HUM Sitaray": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn12isb.tamashaweb.com:8087/jazzauth/HumSitaray-abr/playlist.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/HUM-Sitaray-poster.webp?id=11",
+                    status: "live"
+                }
+            ],
+            
+            "HUM TV": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/82M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/HUM-TV-Poster.webp?id=20240917093633",
+                    status: "live"
+                }
+            ],
+            
+          "hum-europe": [
+                {
+                    name: "Hum Europe",
+                    url: "https://allottplay.com/tv/toffee/live.php?id=hum_tv",
+                    image: "https://irfanistan.wordpress.com/wp-content/uploads/2014/03/image.jpg",
+                    status: "live"
+                }
+            ],  
+            
+            
+     
+            
+            
+            
+            // Add all other channels with single server entries
+            "HUM Masala": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/81M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/HUM-Masala-Poster.webp?id=68",
+                    status: "live"
+                }
+            ],
+            
+    "HUM-News": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/80M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1707716909.webp?id=47",
+                    status: "live"
+                }
+            ],        
+            
+            
+            
+            
+            
+            
+            
+            
+            "GEO News": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/137M/playlist.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/geo-news-live.webp?id=84",
+                    status: "live"
+                }
+            ],
+            
+            "GEO Entertainment": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/122M/playlist.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/geo-entertainment-live.webp?id=75",
+                    status: "live"
+                }
+            ],
+            
+           // HTML5 Player Channels
+            "geo-kahani": [
+                {
+                    name: "Geo Kahani",
+                    url: "https://wasitv-pro.site/abbas/rapid.php?url=https://zx.visiona.top:8443/sportshdd/pknw24/chunks.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb9ZuOZ_Vh2gIiZuwTNUD8mwt60OuLZN2Q7qv3s5zuOPYf-6-VCrTU74w&s=10",
+                    status: "live"
+                }
+                     
+            ],
+            
+         
+
+
+   
+            "Geo-Super": [
+                {
+                    name: "Geo-Super",
+                    url: "https://ml-pull-dvc-myco.io:2096/GEO_SUPER/tracks-v1a1/mono.ts.m3u8",
+                    image: " ",
+                    status: "live"
+                }
+            ],
+            
+            
+            
+            
+            
+            
+            
+            "MUN TV": [
+                {
+                    name: "Direct Server",
+                    url: "https://ml-pull-dvc-myco.io:2096/MUN_TV/tracks-v1a1/mono.ts.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwq9NjdGEEPSXciUK0XHnTATdlb39ipLIFJw&amp;s",
+                    status: "live"
+                }
+            ],
+            
+            
+
+
+
+
+"AurLife": [
+                {
+                    name: "AurLife Server 1",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/126M/chunks.m3u8",
+                    image: " ",
+                    status: "live"
+                },
+                {
+                    name: "AurLife Server 2",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/Aurlife.smil/chunklist_w339570603_b748000_slEng.m3u8",
+                    image: " ",
+                    status: "live"
+                }
+            ],
+
+
+
+
+
+
+
+
+    
+            
+            "ATV": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/atv.smil/chunklist_w1308012764_b748000_slEng.m3u8",
+                    image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d051f-atv.jpg",
+                    status: "live"
+                }
+            ],   
+            
+            "APlus": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/aplus.smil/chunklist_w1362335608_b748000_slEng.m3u8",
+                    image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/72534-a-plus-entertainment.jpg",
+                    status: "live"
+                }
+            ],  
+            
+            "PTV Home": [
+                {
+                    name: "Direct Server",
+                    url: "https://ptvstream1.nayatel.com:8096/transcoder/ptvhometrc_source/playlist.m3u8",
+                    image: "https://ptv.com.pk/frontend/media/gallery/ptvlivehome.jpg",
+                    status: "live"
+                }
+            ],
+            
+            "PTV Global": [
+                {
+                    name: "Direct Server",
+                    url: "https://ptvstream1.nayatel.com:8096/transcoder/ptvglobaltrc_source/playlist.m3u8",
+                    image: "https://ptv.com.pk/frontend/media/gallery/ptvliveglobal.jpg",
+                    status: "live"
+                }
+            ],
+            
+            "PTV-Sports": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/189M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750321954030.webp?id=20",
+                    status: "live"
+                }
+            ],
+            
+           "PTV-National": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/193M/chunks.m3u8",
+                    image: " https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750322366525.webp?id=22",
+                    status: "live"
+                }
+            ], 
+            
+        "PTV-Bolan": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/194M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1750322527745.webp?id=49 ",
+                    status: "live"
+                }
+            ],     
+            
+         "PTV-News": [
+                {
+                    name: "Direct Server",
+                    url: " https://ptvstream1.nayatel.com:8096/transcoder/ptvnewstrc_source/playlist.m3u8",
+                    image: "https://ptv.com.pk/frontend/media/gallery/ptvlivenews.jpg",
+                    status: "live"
+                }
+            ],    
+            
+         "PTV-World": [
+                {
+                    name: "Direct Server",
+                    url: "https://ptvstream1.nayatel.com:8096/transcoder/ptvworldtrc_source/playlist.m3u8 ",
+                    image: "https://ptv.com.pk/frontend/media/gallery/ptvliveworld.jpg",
+                    status: "live"
+                }
+            ],    
+            
+            
+            
+            "BOL News HD": [
+                {
+                    name: "Direct Server",
+                    url: "https://s5.ideationtec.live/BOL_News_HD/BOL_News_HD.m3u8",
+                    image: "https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/16419845781.jpg",
+                    status: "live"
+                }
+            ],
+            
+            "BOL Entertainment HD": [
+                {
+                    name: "Direct Server",
+                    url: "https://s2.ideationtec.live/BOL_Entertainment_HD/BOL_Entertainment_HD.m3u8",
+                    image: "https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/16419858521.jpg",
+                    status: "live"
+                }
+            ],
+            
+            "SAB Entertainment": [
+                {
+                    name: "Direct Server",
+                    url: "https://s1.ideationtec.live/SAB_Entertainment/SAB_Entertainment.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSg0u8cjPgNmC0MJNpCfRq6SyIjKUpA72JO1IaaGMj7Dt5GnZ0iiDFLAs&amp;s=10",
+                    status: "live"
+                }
+            ],
+            
+            "SET Entertainment": [
+                {
+                    name: "Direct Server",
+                    url: "https://s1.ideationtec.live/SET_Ent/SET_Ent.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1730720760949.webp?id=11",
+                    status: "live"
+                }
+            ],
+            
+            "AAN HD": [
+                {
+                    name: "Direct Server",
+                    url: "https://s5.ideationtec.live/AAN_HD/AAN_HD.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1681977574.webp?id=89",
+                    status: "live"
+                }
+            ],
+            
+            "Green ENT": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/166M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702552123.webp?id=64",
+                    status: "live"
+                }
+            ],
+            
+            "Aaj-Ent": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/125M/playlist.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQanw2-oMc7F3BYzgK6FJZHmzExpMju3XpF0Q&amp;usqp=CAU",
+                    status: "live"
+                }
+            ],
+            
+          "PlayTV": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/playmax.smil/chunklist_w255016322_b748000_slEng.m3u8 ",
+                    image: " https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/e0bf4-play-ent.jpg",
+                    status: "live"
+                }
+            ],  
+            
+          "Express-ENT": [
+                {
+                    name: "Direct Server",
+                    url: " https://cdn02khi.tamashaweb.com:8087/jazzauth/159-1M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/express-entertainment-live.webp?id=73 ",
+                    status: "live"
+                }
+            ],  
+            
+         "TV-ONE": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/129M/chunks.m3u8 ",
+                    image: "https://images.mjunoon.tv:8181/logo/Tvone-mjunoon.webp",
+                    status: "live"
+                }
+            ],   
+            
+          "See-TV": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/seetv.smil/chunklist_w1442420466_b1248000_slENG.m3u8 ",
+                    image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d1e60-65d9a-see-tv-low.jpg",
+                    status: "live"
+                }
+            ],  
+            
+           "APNA": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/134M/chunks.m3u8 ",
+                    image: "https://images.mjunoon.tv:8181/logo/Apna-mjunoon.webp",
+                    status: "live"
+                }
+            ], 
+            
+            
+          "8XM2": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://live3.shoq.com.pk/live/eds/8_XM/DASH/8_XM.mpd", 
+                    image: "https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp ", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "7ebaeb181f20ef45689a3b306545792c", 
+                        key: "41ff280dc2d57eaf290bc588d821bb35"
+                    }
+                }
+            ],  
+            
+            
+   "nat-geo": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://v4-pan-n79-cdn-01.live.cdn.cgates.lt/live/dash/561901/index.mpd", 
+                    image: "https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp ", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "6d647aff767c453daa5fb54a44c783c6", 
+                        key: "2f971e6a1cc58e7085afc761a3f13162"
+                    }
+                }
+            ],  
+    
+
+"nat-wild": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://v4-pan-n79-cdn-01.live.cdn.cgates.lt/live/dash/561201/index.mpd", 
+                    image: "https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp ", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "ffa7c3ca6020428c919e13b817b7e31b", 
+                        key: "adf163c6c1729e6f77668d4e49f32352"
+                    }
+                }
+            ],  
+
+
+                 
+            
+            
+            
+          "8XM": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/131M/chunks.m3u8",
+                    image: "https://images.mjunoon.tv:8181/logo/8xm-mjunoon.webp ",
+                    status: "live"
+                }
+            ],  
+            
+         "JALWA": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn5.mjunoon.tv:8087/streamtest/135M/chunks.m3u8 ",
+                    image: "https://images.mjunoon.tv:8181/logo/Jalwa-mjunoon.webp",
+                    status: "live"
+                }
+            ],   
+            
+         "filmazia": [
+                {
+                    name: "Direct Server",
+                    url: " https://s3.ideationtec.live/Film_World/Film_World.m3u8",
+                    image: " https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjDWgS5E_GIaSqaJ4nkgOiJRR80aOkjM88iQ&amp;s",
+                    status: "live"
+                }
+            ],
+            
+          "Filmax": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/158-1M/chunks.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAIbzFfvYLZ3dIpokqv6n7vmkvYPqti6d6MA72c-6zwMO7-jYWlPXoS44Q&amp;s=10 ",
+                    status: "live"
+                }
+            ],  
+            
+          "Aruj-TV": [
+                {
+                    name: "Direct Server",
+                    url: " https://s2.ideationtec.live/Aruj_Ent/Aruj_Ent.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoJMdKWDCodNvnjUWWwJk-krlUsDhyqRo1gg&amp;s",
+                    status: "live"
+                }
+            ],  
+            
+         "LTN-Family": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/158-2M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/ltn-family-live.webp?id=87",
+                    status: "live"
+                }
+            ],   
+            
+     "Inplus": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/165M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/TMSH-1720441424490.webp?id=46",
+                    status: "live"
+                }
+            ],       
+            
+            
+            
+            
+            
+            
+          "A1-TV": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/184M/chunks.m3u8",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/a1-tv-live.webp?id=18",
+                    status: "live"
+                }
+            ],  
+            
+           "TEN-Sports": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/tensports.smil/playlist.m3u8 ",
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/ten-sports-hd-poster.webp?id=76 ",
+                    status: "live"
+                }
+            ], 
+            
+            
+            
+            
+            
+            
+          "92 News": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/92news.smil/chunklist_w495747136_b748000_slEng.m3u8",
+                    image: " https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/3981a-65d9a-92-news-low.jpg",
+                    status: "live"
+                }
+            ],  
+            
+            
+            
+            
+            
+            
+            
+            
+            
+       
+
+
+
+
+     
+         "24": [
+                {
+                    name: "Direct Server",
+                    url: "https://tapmadlive.akamaized.net/tapmadold/channel24.smil/playlist.m3u8",
+                    image: "https://tapmadlive.akamaized.net/tapmadold/channel24.smil/playlist.m3u8",
+                    status: "live"
+                }
+            ],   
+          
+
+        
+        "GNN": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/jaagtv.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/820ad-gnn-4.jpg",
+            status: "live"
+        }
+            ],
+        "Animal-Planet": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/animal.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/996e5-animal-planet-4.jpg",
+            status: "live"
+        }
+            ],
+        "Discovery": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/discovery.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d3023-4.jpg",
+            status: "live"
+            }
+        
+            ],
+        "Kids-Zone-Plus": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://live2.shoq.com.pk/live/eds/Kids_Zone_Plus/DASH/Kids_Zone_Plus.mpd", 
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJo1h7wXNNa0GsAR02QYOeyK9L50fCJDbCL2IoJWNN1vuJn6dsAtD8Ru8O&amp;s=10", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "ec087eb4cd899e1a068083608f0aa3f6", 
+                        key: "f36cd5dddd56ca76246a62b7b02148c9"
+                    }
+                }
+            ],
+            "Planet-Fun": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://live2.shoq.com.pk/live/eds/Planet_Fun/DASH/Planet_Fun.mpd", 
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMt_5jjvTL8DkceSNOamedlWj2Kk7-K6NU2Q&amp;usqp=CAU", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "55f8fb7e199225c06268117fe3ff232a", 
+                        key: "30f8dcb48a1b4a7b60ae04b88fe5397a"
+                    }
+                }
+            ],
+            
+            
+            "minimax2": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://live3.shoq.com.pk/live/eds/Minimax/DASH/Minimax.mpd", 
+                    image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702633459-logo.webp?id=57", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "034c919e34f1de07c325a7b23ad451a0", 
+                        key: "cf88732938381b02d3fbfa09de6860ae"
+                    }
+                }
+            ],    
+            
+            
+            
+            
+            
+            
+
+
+
+        "Cartoon-Network": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/cartoon.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/70010-cartoon-network-in-urdu-4.jpg",
+            status: "live"
+        }
+            ],
+        "Discovery-Kids": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/discoverykids.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/85fdc-324-x-432.jpg",
+            status: "live"
+        }
+            ],
+        "Minimax": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/157-1M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1702633459-logo.webp?id=57",
+            status: "live"
+        }
+            ],
+        "Samaa-News": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/saamanews.smil/chunklist_w1675076440_b1248000_slENG.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1633512222056d2-65d9a-saama-tv-low.jpg",
+            status: "live"
+        }
+            ],
+        "Dunya-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/113M/chunks.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZXfD8mXuhzYNORwhKe9bZ8Yr-Vi5mbSnTsqc9PAMr3gNZIrM58bbyTFxM&amp;s=10",
+            status: "live"
+        }
+            ],
+        "City-41": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/143M/chunks.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtxzNoKL_ICFzKxD8mLjEnQjipQR9zoyVTAURHQ8Ir1k0blQEPs2BszZ2B&amp;s=10",
+            status: "live"
+        }
+            ],
+        "City-42": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/city42.smil/chunklist_w1972668194_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/e8458-city-42.jpg",
+            status: "live"
+        }
+            ],
+        "Dharti-TV": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/dhartitv.smil/chunklist_w1746647874_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/5eb9a-dharti-tv.jpg",
+            status: "live"
+        }
+            ],
+        "Awaz-TV": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/awaztv.smil/chunklist_w1217689583_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/d0b57-awaz-tv.jpg",
+            status: "live"
+        }
+            ],
+        "Public-News": [
+                {
+            name: "Direct Server",
+            url: "https://s4.ideationtec.live/Public_News_HD/Public_News_HD.m3u8",
+            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Public_News_logo.jpg/640px-Public_News_logo.jpg",
+            status: "live"
+        }
+            ],
+        "K2": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/k2.smil/chunklist_w664054550_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/2ae68-kay-2.jpg",
+            status: "live"
+        }
+            ],
+        "K21-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn07isb.tamashaweb.com:8087/jazzauth/K21-abr/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/7d071-k21-news.jpg",
+            status: "live"
+        }
+            ],
+        "Kohinoor": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/kohenoor.smil/chunklist_w1226583800_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/0a7b4-kohenoor.jpg",
+            status: "live"
+        }
+            ],
+        "Khyber-Ent": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/khyber.smil/chunklist_w1256540169_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/9e716-khyber-entertainment.jpg",
+            status: "live"
+        }
+            ],
+        "Khyber-News": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/khybernews.smil/chunklist_w1728985823_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/9b2c5-khyber-new.jpg",
+            status: "live"
+        }
+            ],
+        "Hyder-TV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn.live247stream.com/hyder/tv/hyder/stream2/chunks.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb0KH_d2PnODfYfWgEDpu87rOXkEd8ugIisUStPEawQ7u890qlqKW2198&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Ahlebait-TV": [
+                {
+            name: "Direct Server",
+            url: "https://stream.wpbond.com/live/ahlebait1.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwZtTrRNvdBd6-QY_EdNmQRf7XQov12URPrj8OUxaxSUrdcK7F03jNSMUR&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Sahar-Urdu": [
+                {
+            name: "Direct Server",
+            url: "https://stream.wpbond.com/live/saharurdu.m3u8",
+            image: "https://i.pinimg.com/736x/ec/a7/c3/eca7c3b64bb64c6feedfc423b4c34d1f.jpg",
+            status: "live"
+        }
+            ],
+        "Hidayat-TV": [
+                {
+            name: "Direct Server",
+            url: "https://hidayat.wpbond.com/live/hidayat1.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUClbqS7b8TVH3iAjv-fj0WTR1doiVwyK3Pmhqo8_cyzG_wzpBezh8T8o&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Imam-Ali-TV": [
+                {
+            name: "Direct Server",
+            url: "https://stream.wpbond.com/live/imamalitv.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN8HNJKoWT8DO7WZDSAz3xcsEfk5SyvQo6QQ&amp;s",
+            status: "live"
+        }
+            ],
+        "Karbala-TV": [
+                {
+            name: "Direct Server",
+            url: "https://stream.wpbond.com/live/karbalatv.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkWuDWO4AdHO4CnuFbfCG-zfbDC8OF8NuOSfW9WQ3JZop-3nCQTsXL4J8&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Qaim-TV": [
+                {
+            name: "Direct Server",
+            url: "http://cdn37.live247stream.com/qaim/tv/playlist.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpJLwEJox0iiu7P0X_RY93ok5Jqq-GgBqJMw&amp;s",
+            status: "live"
+        }
+            ],
+        "Imam-Hussein-TV": [
+                {
+            name: "Direct Server",
+            url: "https://ak.imamhussein.live/imhtv4live/imhtv4.smil/imhtv4publish/imhtv4_source/playlist.m3u8",
+            image: "https://i.pinimg.com/736x/9e/4b/9a/9e4b9a0de2fb4ff6262b9ac13009675b.jpg",
+            status: "live"
+        }
+            ],
+        "Zainabia-TV": [
+                {
+            name: "Direct Server",
+            url: "https://zainabia.livebox.co.in/ZainabiaChannelhls/channel.m3u8",
+            image: "https://shialivetv.com/shialive/assets/img/t3bepyRDu65zIkcaQB2Q_3_small.png",
+            status: "live"
+        }
+            ],
+        "Paigham-TV": [
+                {
+            name: "Direct Server",
+            url: "",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq6_XBEo2H-puZwudlcwEdturJGmDSZl_NlQ93Et7FH4BjTcZpqXA3V8Y&amp;s=10",
+            status: "live"
+        }
+            ],
+            
+            
+            
+            
+            
+            
+     "Paigham-TV": [ 
+                { 
+                    name: "Direct Server", 
+                    url: "https://live2.shoq.com.pk/live/eds/Paigham_TV/DASH/Paigham_TV.mpd", 
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMt_5jjvTL8DkceSNOamedlWj2Kk7-K6NU2Q&amp;usqp=CAU", 
+                    status: "live", 
+                    clearkey: {
+                        keyId: "3a15c0eb8af0f8dbf3ce80f2e8a4ad3f", 
+                        key: "2f1221c47815d301f217e5a70a2040da"
+                    }
+                }
+            ],       
+            
+            
+            
+            
+            
+        "Madni-TV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/121H/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Madni-TV-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Makkah-TV": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/makkah.smil/chunklist_w669731795_b748000_slENG.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1649059727Artboard5-100.jpg",
+            status: "live"
+        }
+            ],
+        "Madina-TV": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/madina.smil/chunklist_w2057112905_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/images/channels/new_thumbs/1649059915Artboard5-100.jpg",
+            status: "live"
+        }
+            ],
+        "Metro-One": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/metro.smil/chunklist_w1592291775_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/b736c-metro-one.jpg",
+            status: "live"
+        }
+            ],
+        "Mehran-TV": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/mehran.smil/chunklist_w610434004_b748000_slEng.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/06b64-mehran-tv.jpg",
+            status: "live"
+        }
+            ],
+        "Neo-News": [
+                {
+            name: "Direct Server",
+            url: "https://s5.ideationtec.live/Neo_News/Neo_News.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/b8f1b-neo-news.jpg",
+            status: "live"
+        }
+            ],
+        "VSH-News": [
+                {
+            name: "Direct Server",
+            url: "https://tapmadlive.akamaized.net/tapmadold/vsh.smil/playlist.m3u8",
+            image: "https://d34080pnh6e62j.cloudfront.net/adminpanel/assets/uploads/NewChannelThumbnailPath/61c18-vsh-news.jpg",
+            status: "live"
+        }
+            ],
+        "Sindh-TV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/136-1M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/sindh-tv-live.webp?id=40",
+            status: "live"
+        }
+            ],
+        "Sindh-TV-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/136-2M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/sindh-tv-news-live.webp?id=59",
+            status: "live"
+        }
+            ],
+        "Such-TV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/183M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/poster/such-tv-live.webp?id=83",
+            status: "live"
+        }
+            ],
+        "5-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/159-4M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/TMSH-1723464324782.webp?id=74",
+            status: "live"
+        }
+            ],
+        "Movie-One": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/176M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/movie-one-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Champion-TV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/177M/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/champion-tv-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Abb-Takk": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/133M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Abb-Takk-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "ABN-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/161M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/abn-news-live-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Lahore-Rang": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/179M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Lahore-Rang-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Times-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/172M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/times_news-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Kashish": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/150M/chunks.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Kashish-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "KTN-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn22lhr.tamashaweb.com:8087/jazzauth/ktnNews-abr/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/KTN-news-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "KTN": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/149M/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/KTN-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Khaber": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/114M/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Khaber-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Pashto1": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/119M/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Pashto1-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "365-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/140M/playlist.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl4yGo8Fh80P_PYFs7688pVPm6GSZ6cU7WwSKIE8lLylhBzX1kg-7aC7-4&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Waseb": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/130M/playlist.m3u8",
+            image: "https://images.mjunoon.tv:8181/logo/Waseb-mjunoon.webp",
+            status: "live"
+        }
+            ],
+        "Lahore-News": [
+                {
+            name: "Direct Server",
+            url: "https://vcdn.dunyanews.tv/lahorelive/_definst_/ngrp:lnews_1_all/playlist.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXBvycnZHVWvTjhtHwt0-y5guhOtXlD9JGvNWxuvJwYdFwyWCYJHciTwP-&amp;s=10",
+            status: "live"
+        }
+            ],
+        "Aaj-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/124M/playlist.m3u8",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxy0nP3owN22Aoh8_xdlp_nVbIPXAdtHGxjA&amp;s",
+            status: "live"
+        }
+            ],
+        "News-One": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/128M/playlist.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/news-one-live.webp?id=96",
+            status: "live"
+        }
+            ],
+        "Discover-Pak": [
+                {
+            name: "Direct Server",
+            url: "https://cdn5.mjunoon.tv:8087/streamtest/132M/playlist.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/discover-pakistan-live-logo.webp?id=27",
+            status: "live"
+        }
+            ],
+        "Roze-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/139M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/roze-news-live.webp?id=70",
+            status: "live"
+        }
+            ],
+        "Rohi": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/147M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/rohi-live.webp?id=17",
+            status: "live"
+        }
+            ],
+        "Dawn-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/152M/chunks.m3u8",
+            image: "https://upload.wikimedia.org/wikipedia/en/d/d2/Dawn_News.jpg",
+            status: "live"
+        }
+            ],
+        "Express-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/155M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/express-news-live.webp?id=49",
+            status: "live"
+        }
+            ],
+        "AIK-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/169M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/AIKNEWS-LOGO.webp?id=65",
+            status: "live"
+        }
+            ],
+        "GTV": [
+                {
+            name: "Direct Server",
+            url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/186M/chunks.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/gtv-new-logo.webp?id=34",
+            status: "live"
+        }
+            ],
+"Suno-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn22lhr.tamashaweb.com:8087/jazzauth/Suno_News-abr/playlist.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/1709545345-logo.webp?id=30",
+            status: "live"
+        }
+            ],  
+            
+            
+ "Sun-News": [
+                {
+            name: "Direct Server",
+            url: "https://cdn12isb.tamashaweb.com:8087/jazzauth/SUN-NEWS-abr/playlist.m3u8",
+            image: "https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1758117208685.webp?id=73",
+            status: "live"
+        }
+            ],  
+                       
+            
+            
+            
+            
+            
+            
+            
+            
+            "Capital-TV": [
+                {
+                    name: "Direct Server",
+                    url: "https://cdn02khi.tamashaweb.com:8087/jazzauth/111M/chunks.m3u8",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9Wqxi3XfF5NV_FMKA7ZAbyYAySTdBFOxIGix7eGoYGwjiLuzYJqer4Gs&amp;s=10",
+                    status: "live"
+                }
+            ]
+                
+        };
+
+        // Initialize JW Player
+        let jwPlayerInstance;
+        let currentPlayingButton = null;
+        let isPlaying = false;
+        let isFullscreen = false;
+        let currentPlayer = 'jwplayer'; // Default player
+        
+        // Initialize HTML5 Player
+        const html5VideoPlayer = document.getElementById('html5-video-player');
+        const html5PlayPauseBtn = document.getElementById('html5-play-pause');
+        const html5ProgressContainer = document.getElementById('html5-progress-container');
+        const html5ProgressBar = document.getElementById('html5-progress-bar');
+        const html5CurrentTime = document.getElementById('html5-current-time');
+        const html5Duration = document.getElementById('html5-duration');
+        const html5FullscreenBtn = document.getElementById('html5-fullscreen');
+        
+        function initJWPlayer() {
+            try {
+                jwPlayerInstance = jwplayer("player").setup({
+                    playlist: [{
+                        file: "https://live2.shoq.com.pk/live/eds/Kids_Zone_Plus/DASH/Kids_Zone_Plus.mpd",
+                        image: "https://i.ibb.co/3NgJ4zh/Poster.jpg",
+                        drm: {
+                            clearkey: {
+                                keyId: "ec087eb4cd899e1a068083608f0aa3f6",
+                                key: "f36cd5dddd56ca76246a62b7b02148c9"
+                            }
+                        }
+                    }],
+                    width: '100%',
+                    height: '100%',
+                    autostart: false,
+                    mute: false,
+                    primary: "html5",
+                    hlshtml: true,
+                    stretching: "uniform",
+                    preload: "auto"
+                });
+
+                jwPlayerInstance.on('ready', function() {
+                    jwPlayerInstance.setMute(false);
+                });
+
+                jwPlayerInstance.on('error', function(e) {
+                    showJWError('Player error: ' + e.message);
+                    document.getElementById('loading-spinner').style.display = 'none';
+                });
+
+                jwPlayerInstance.on('setupError', function(e) {
+                    showJWError('Setup error: ' + e.message);
+                    document.getElementById('loading-spinner').style.display = 'none';
+                });
+
+            } catch (error) {
+                showJWError('Failed to initialize player: ' + error.message);
+                document.getElementById('loading-spinner').style.display = 'none';
+            }
+        }
+        
+        function showJWError(message) {
+            console.error(message);
+            alert(message);
+        }
+
+        // Change JWPlayer channel
+        function changeJWChannel(streamUrl, imageUrl, channelName, keyId, key, headers, button) {
+            document.getElementById('loading-spinner').style.display = 'block';
+            
+            // Get the server info for this channel
+            const server = channelServers[channelName] ? channelServers[channelName][0] : null;
+            
+            // Create playlist item
+            const playlistItem = {
+                file: streamUrl,
+                image: imageUrl,
+                title: channelName
+            };
+
+            // Add DRM if available (using the server configuration)
+            if (server && server.clearkey) {
+                playlistItem.drm = {
+                    clearkey: server.clearkey
+                };
+            }
+
+            // Add headers if available
+            if (headers) {
+                try {
+                    playlistItem.headers = JSON.parse(headers);
+                } catch (e) {
+                    console.warn('Failed to parse headers', e);
+                }
+            }
+
+            // Load and play the channel
+            jwPlayerInstance.load([playlistItem]);
+            jwPlayerInstance.setMute(false);
+            jwPlayerInstance.play();
+            
+            // Update active button styling
+            if (currentPlayingButton) {
+                currentPlayingButton.classList.remove('playing');
+            }
+            
+            button.classList.add('playing');
+            currentPlayingButton = button;
+            
+            // Update play/pause button state
+            isPlaying = true;
+            
+            // Hide loading spinner when playback starts
+            jwPlayerInstance.on('firstFrame', function() {
+                document.getElementById('loading-spinner').style.display = 'none';
+            });
+        }
+        
+        // HTML5 Player Functions
+        function initHTML5Player() {
+            // Play/Pause button
+            html5PlayPauseBtn.addEventListener('click', function() {
+                if (html5VideoPlayer.paused) {
+                    html5VideoPlayer.play();
+                    html5PlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    html5VideoPlayer.pause();
+                    html5PlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+            
+            // Progress bar
+            html5ProgressContainer.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const percent = (e.clientX - rect.left) / rect.width;
+                html5VideoPlayer.currentTime = percent * html5VideoPlayer.duration;
+            });
+            
+            // Time update
+            html5VideoPlayer.addEventListener('timeupdate', function() {
+                const currentMinutes = Math.floor(html5VideoPlayer.currentTime / 60);
+                const currentSeconds = Math.floor(html5VideoPlayer.currentTime % 60);
+                html5CurrentTime.textContent = 
+                    `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
+                
+                const durationMinutes = Math.floor(html5VideoPlayer.duration / 60);
+                const durationSeconds = Math.floor(html5VideoPlayer.duration % 60);
+                html5Duration.textContent = 
+                    `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
+                
+                // Update progress bar
+                const progressPercent = (html5VideoPlayer.currentTime / html5VideoPlayer.duration) * 100;
+                html5ProgressBar.style.width = `${progressPercent}%`;
+            });
+            
+            // Fullscreen
+            html5FullscreenBtn.addEventListener('click', function() {
+                const playerContainer = document.getElementById('html5-player-container');
+                
+                if (!document.fullscreenElement) {
+                    if (playerContainer.requestFullscreen) {
+                        playerContainer.requestFullscreen();
+                    } else if (playerContainer.webkitRequestFullscreen) {
+                        playerContainer.webkitRequestFullscreen();
+                    } else if (playerContainer.mozRequestFullScreen) {
+                        playerContainer.mozRequestFullScreen();
+                    } else if (playerContainer.msRequestFullscreen) {
+                        playerContainer.msRequestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+            });
+            
+            // Handle fullscreen change
+            document.addEventListener('fullscreenchange', function() {
+                if (document.fullscreenElement) {
+                    html5FullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                } else {
+                    html5FullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            });
+            
+            // Error handling
+            html5VideoPlayer.addEventListener('error', function() {
+                document.getElementById('loading-spinner').style.display = 'none';
+                alert('Error loading video. Please try another channel.');
+            });
+            
+            html5VideoPlayer.addEventListener('waiting', function() {
+                document.getElementById('loading-spinner').style.display = 'block';
+            });
+            
+            html5VideoPlayer.addEventListener('playing', function() {
+                document.getElementById('loading-spinner').style.display = 'none';
+                html5PlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            });
+            
+            html5VideoPlayer.addEventListener('pause', function() {
+                html5PlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            });
+        }
+        
+        // Change HTML5 Player channel
+        function changeHTML5Channel(streamUrl, button) {
+            document.getElementById('loading-spinner').style.display = 'block';
+            
+            // Stop and reset the video
+            html5VideoPlayer.pause();
+            html5VideoPlayer.currentTime = 0;
+            
+            // Change source
+            html5VideoPlayer.src = streamUrl;
+            
+            // Play the video
+            html5VideoPlayer.play().then(() => {
+                document.getElementById('loading-spinner').style.display = 'none';
+                html5PlayPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }).catch(e => {
+                console.log('Autoplay blocked:', e);
+                document.getElementById('loading-spinner').style.display = 'none';
+                html5PlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            });
+            
+            // Update active button styling
+            if (currentPlayingButton) {
+                currentPlayingButton.classList.remove('playing');
+            }
+            
+            button.classList.add('playing');
+            currentPlayingButton = button;
+        }
+        
+        // Player toggle functionality
+        function setupPlayerToggle() {
+            const jwplayerToggle = document.getElementById('jwplayer-toggle');
+            const html5playerToggle = document.getElementById('html5player-toggle');
+            
+            jwplayerToggle.addEventListener('click', function() {
+                if (currentPlayer !== 'jwplayer') {
+                    // Switch to JWPlayer
+                    currentPlayer = 'jwplayer';
+                    jwplayerToggle.classList.add('active');
+                    html5playerToggle.classList.remove('active');
+                    
+                    // Show JWPlayer, hide HTML5 Player
+                    document.getElementById('jwplayer-container').style.display = 'block';
+                    document.getElementById('html5-player-container').style.display = 'none';
+                    
+                    // Stop HTML5 Player
+                    html5VideoPlayer.pause();
+                    html5VideoPlayer.currentTime = 0;
+                    
+                    // Reset HTML5 Player UI
+                    html5PlayPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    html5ProgressBar.style.width = '0%';
+                    html5CurrentTime.textContent = '00:00';
+                    html5Duration.textContent = '00:00';
+                }
+            });
+            
+            html5playerToggle.addEventListener('click', function() {
+                if (currentPlayer !== 'html5') {
+                    // Switch to HTML5 Player
+                    currentPlayer = 'html5';
+                    html5playerToggle.classList.add('active');
+                    jwplayerToggle.classList.remove('active');
+                    
+                    // Show HTML5 Player, hide JWPlayer
+                    document.getElementById('html5-player-container').style.display = 'block';
+                    document.getElementById('jwplayer-container').style.display = 'none';
+                    
+                    // Stop JWPlayer
+                    if (jwPlayerInstance) {
+                        jwPlayerInstance.stop();
+                    }
+                }
+            });
+        }
+        
+        // Channel filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const channels = document.querySelectorAll('.channel-button');
+                
+                channels.forEach(channel => {
+                    channel.classList.remove('show-channel');
+                    if (filter === 'all' || channel.getAttribute('data-category') === filter) {
+                        channel.classList.add('show-channel');
+                    }
+                });
+            });
+        });
+        
+        // Server selection functionality
+        const serverModal = document.getElementById('server-modal');
+        const serverModalTitle = document.getElementById('server-modal-title');
+        const serverList = document.getElementById('server-list');
+        const serverModalClose = document.getElementById('server-modal-close');
+        let currentChannel = null;
+        
+        // Add click event to all channel buttons
+        document.querySelectorAll('.channel-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const channelName = this.getAttribute('data-channel');
+                const isSingleSource = this.getAttribute('data-single-source') === 'true';
+                const playerType = this.getAttribute('data-player') || 'jwplayer';
+                
+                // If the channel is for a different player than currently active, switch players
+                if (playerType !== currentPlayer) {
+                    if (playerType === 'jwplayer') {
+                        document.getElementById('jwplayer-toggle').click();
+                    } else {
+                        document.getElementById('html5player-toggle').click();
+                    }
+                }
+                
+                if (!channelName || isSingleSource) {
+                    // If no channel name or single source channel, play directly without showing server modal
+                    const imgSrc = this.querySelector('img').src;
+                    const server = channelServers[channelName] ? channelServers[channelName][0] : null;
+                    
+                    if (server) {
+                        if (currentPlayer === 'jwplayer') {
+                            changeJWChannel(
+                                server.url,
+                                server.image,
+                                channelName,
+                                null,
+                                null,
+                                null,
+                                this
+                            );
+                        } else {
+                            changeHTML5Channel(server.url, this);
+                        }
+                    }
+                    return;
+                }
+                
+                currentChannel = channelName;
+                showServerModal(channelName);
+            });
+        });
+        
+        // Close modal when clicking the close button
+        serverModalClose.addEventListener('click', function() {
+            serverModal.style.display = 'none';
+        });
+        
+        // Close modal when clicking outside the modal content
+        serverModal.addEventListener('click', function(e) {
+            if (e.target === serverModal) {
+                serverModal.style.display = 'none';
+            }
+        });
+        
+        // Function to show server modal
+        function showServerModal(channelName) {
+            if (!channelServers[channelName]) {
+                // If no servers defined for this channel, play the first available stream directly
+                const button = document.querySelector(`.channel-button[data-channel="${channelName}"]`);
+                if (button) {
+                    const imgSrc = button.querySelector('img').src;
+                    if (currentPlayer === 'jwplayer') {
+                        changeJWChannel(
+                            channelServers[channelName] ? channelServers[channelName][0].url : '',
+                            imgSrc,
+                            channelName,
+                            null,
+                            null,
+                            null,
+                            button
+                        );
+                    } else {
+                        changeHTML5Channel(
+                            channelServers[channelName] ? channelServers[channelName][0].url : '',
+                            button
+                        );
+                    }
+                }
+                return;
+            }
+            
+            serverModalTitle.textContent = `Multiple links for ${channelName}`;
+            serverList.innerHTML = '';
+            
+            if (channelServers[channelName]) {
+                channelServers[channelName].forEach(server => {
+                    const serverItem = document.createElement('li');
+                    serverItem.className = 'server-item';
+                    serverItem.innerHTML = `
+                        <span class="server-name">${server.name}</span>
+                        <span class="server-status status-${server.status}">${server.status}</span>
+                    `;
+                    
+                    serverItem.addEventListener('click', function() {
+                        if (server.status === 'live') {
+                            const button = document.querySelector(`.channel-button[data-channel="${channelName}"]`);
+                            if (currentPlayer === 'jwplayer') {
+                                changeJWChannel(
+                                    server.url, 
+                                    server.image, 
+                                    channelName, 
+                                    null, 
+                                    null, 
+                                    null, 
+                                    button
+                                );
+                            } else {
+                                changeHTML5Channel(server.url, button);
+                            }
+                            serverModal.style.display = 'none';
+                        } else {
+                            alert('This server is currently offline. Please select another server.');
+                        }
+                    });
+                    
+                    serverList.appendChild(serverItem);
+                });
+            }
+            
+            serverModal.style.display = 'flex';
+        }
+        
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initJWPlayer();
+            initHTML5Player();
+            setupPlayerToggle();
+        });
+    </script>
+</body>
+</html>
