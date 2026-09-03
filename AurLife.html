@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JW Player HLS Stream</title>
+    <!-- JW Player Library -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.26.0/jwplayer.js"></script>
+    <script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';</script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: white;
+        }
+        #player-container {
+            width: 100%;
+            background-color: #000000;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2c5282;
+        }
+        .player-info {
+            font-size: 10px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border-radius: 4px;
+        }
+        .branding {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .branding img {
+            width: 70px;
+            height: 90px;
+            right: 50px;
+            border-radius: 5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Stylish Branding Text */
+        .branding-text {
+            position: relative;
+            font-size: 24px;
+            right: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        .branding-text p:first-child {
+            font-weight: bold;
+            background: linear-gradient(to right, #ff0000, #ff8c00, #ff0, #0f0, #00f, #4b0082, #ee82ee);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 5s ease infinite;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        .branding-text p:last-child {
+            font-size: 10px;
+            color: #ccc;
+            font-style: italic;
+            margin-top: 0;
+        }
+        
+        /* Animated border effect */
+        .logo-container {
+            position: relative;
+            width: 80px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-border {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            animation: rotate 4s linear infinite;
+            box-sizing: border-box;
+        }
+        .logo-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400%;
+            border-radius: 8px;
+            opacity: 0;
+            transition: 0.5s;
+            animation: animate 20s linear infinite;
+        }
+        .logo-container:hover .logo-border::before {
+            opacity: 1;
+            z-index: 0;
+        }
+        
+        /* Animations */
+        @keyframes animate {
+            0% {
+                background-position: 0 0;
+            }
+            50% {
+                background-position: 300% 0;
+            }
+            100% {
+                background-position: 0 0;
+            }
+        }
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container"></div>
+    
+    <div class="controls">
+        <button onclick="jwplayer().play()">▶ Play</button>
+        <button onclick="jwplayer().pause()">⏸ Pause</button>
+        <button onclick="toggleMute()" id="mute-btn">🔇 Mute</button> 
+        <button onclick="toggleFullscreen()" id="fullscreen-btn">⛶ </button>
+    </div>
+    
+    <div class="branding">
+        <div class="logo-container">
+            <div class="logo-border"></div>
+            <img src="https://canvas.tamashaweb.com/jazzlive/uploads/channels/logo/1745518766547.webp?id=28" alt="">
+        </div>
+        <div class="branding-text">
+            <p>Aur Life</p>
+            <p>Live Entertainment Broadcast</p>
+        </div>
+    </div>
+
+    <script>
+        // Setup the player with initial HLS stream
+        jwplayer("player-container").setup({
+            playlist: [{
+                file: "https://cdn22lhr.tamashaweb.com:8087/jazzauth/AurLife-abr/playlist.m3u8",
+                title: "Live Stream",
+                description: "HLS Live Stream Playback"
+            }],
+            width: "100%",
+            aspectratio: "16:9",
+            autostart: false,
+            mute: false,
+            primary: "html5",
+            hlshtml: true,
+            stretching: "uniform"
+        });
+        
+        // Toggle mute function
+        function toggleMute() {
+            const isMuted = jwplayer().getMute();
+            jwplayer().setMute(!isMuted);
+            document.getElementById('mute-btn').textContent = !isMuted ? '🔊 Unmute' : '🔇 Mute';
+        }
+        
+        // Toggle fullscreen function
+        function toggleFullscreen() {
+            const player = jwplayer();
+            if (player.getFullscreen()) {
+                player.setFullscreen(false);
+                document.getElementById('fullscreen-btn').textContent = '⛶ Fullscreen';
+            } else {
+                player.setFullscreen(true);
+                document.getElementById('fullscreen-btn').textContent = '⛶ Exit Fullscreen';
+            }
+        }
+        
+        // Event listeners
+        jwplayer().on('ready', function() {
+            document.getElementById('player-status').textContent = 'Ready';
+            document.getElementById('current-stream').textContent = 'Dangal TV';
+        });
+        
+        jwplayer().on('play', function() {
+            document.getElementById('player-status').textContent = 'Playing';
+        });
+        
+        jwplayer().on('pause', function() {
+            document.getElementById('player-status').textContent = 'Paused';
+        });
+    </script>
+</body>
+</html>
