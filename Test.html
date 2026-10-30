@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mjunoon Custom API Player</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0a; color:#fff; font-family:system-ui,sans-serif; }
+  .player-wrap { max-width:900px; margin:20px auto; padding:16px; }
+  video { width:100%; border-radius:12px; background:#000; aspect-ratio:16/9; }
+  .controls { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+  input, button { padding:12px 16px; border-radius:8px; border:none; background:#1e1e1e; color:#fff; font-size:15px; cursor:pointer; }
+  input { flex: 1; min-width: 200px; }
+  button { background:#e50914; font-weight:600; }
+  button:disabled { opacity: 0.5; }
+  .status { margin-top:10px; font-size:13px; color:#888; word-break: break-all; }
+  .status.live { color:#2ecc71; }
+  .status.err { color:#e74c3c; }
+</style>
+</head>
+<body>
+<div class="player-wrap">
+  <video id="video" controls autoplay muted playsinline></video>
+  
+  <div class="controls">
+    <input type="text" id="channelInput" value="Madni-121" placeholder="Channel ID">
+    <input type="text" id="qualityInput" value="121L" placeholder="Quality">
+    <button id="loadBtn" onclick="loadStream()">▶ Play via API</button>
+  </div>
+  <div class="status" id="status">Idle</div>
+</div>
+
+<script>
+const video = document.getElementById('video');
+const statusEl = document.getElementById('status');
+const loadBtn = document.getElementById('loadBtn');
+let hls = null;
+
+// 🔥 1. Asal (Encrypted) Bearer Token
+const BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvY2RuMi5tanVub29uLnR2OjkxOTFcL3YyXC9hdXRoXC9sb2dpbiIsImlhdCI6MTc5MzE5NTg1OCwiZXhwIjoxNzkzMTk5NDU4LCJuYmYiOjE3OTMxOTU4NTgsImp0aSI6Ik1Pb29BYmhmYnQwMnA1cVoiLCJzdWIiOjIsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.4H4fot-M3D9LAlh4jb0c9Izgcxe7J2c5_0liLyMcKo4";
+
+// 🔥 2. Decoded Token Data (Aapne jo bheja hai)
+const TOKEN_DATA = {
+  "iss": "https://cdn2.mjunoon.tv:9191/v2/auth/login",
+  "iat": 1793195858,
+  "exp": 1793199458,
+  "nbf": 1793195858,
+  "jti": "MOooAbhfbt02p5qZ",
+  "sub": 2,
+  "prv": "87e0af1ef9fd15812fde5c971553a14e0b047546aa"
+};
+
+function setStatus(msg, cls='') {
+  statusEl.textContent = msg;
+  statusEl.className = 'status ' + cls;
+}
+
+async function loadStream() {
+  const channel = document.getElementById('channelInput').value.trim();
+  const quality = document.getElementById('qualityInput').value.trim();
+  
+  loadBtn.disabled = true;
+  setStatus('API se stream link mangwaya ja raha hai...');
+  
+  try {
+    const apiUrl = 'https://cdn2.mjunoon.tv:9191/v2/streaming-url';
+    
+    // API ko Asal Token bhej rahe hain, decoded data nahi
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + BEARER_TOKEN, 
+        'Origin': 'https://www.mjunoon.tv',
+        'Referer': 'https://www.mjunoon.tv/'
+      },
+      body: JSON.stringify({ channel: channel, quality: quality })
+    });
+    
+    const data = await response.json();
+    console.log("API Response:", data); 
+
+    let authToken = data.eData || data.data?.eData || data.token;
+
+    if (!authToken) {
+      throw new Error('API ne token nahi diya. Token expire ho chuka hoga.');
+    }
+    
+    // Naya link format (chunks ke sath)
+    const streamUrl = `https://cdn5.mjunoon.tv:8087/web/${channel}/live/${quality}/chunks.m3u8?wmsAuthSign=${authToken}`;
+    
+    playHLS(streamUrl);
+    
+  } catch (err) {
+    setStatus('❌ ' + err.message, 'err');
+  } finally {
+    loadBtn.disabled = false;
+  }
+}
+
+function playHLS(url) {
+  if (hls) { hls.destroy(); hls = null; }
+  
+  setStatus('Video load ho rahi hai...');
+  
+  if (Hls.isSupported()) {
+    hls = new Hls({ lowLatencyMode: true, enableWorker: true });
+    
+    hls.loadSource(url); 
+    
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      video.play().catch(()=>{});
+      setStatus('🟢 LIVE - Chal gaya!', 'live');
+    });
+    hls.on(Hls.Events.ERROR, (e, data) => {
+      if (data.fatal) setStatus('❌ Player Error: ' + data.details, 'err');
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = url;
+    video.play().catch(()=>{});
+    setStatus('🟢 LIVE (native)', 'live');
+  } else {
+    setStatus('❌ HLS not supported', 'err');
+  }
+}
+</script>
+</body>
+</html>
